@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Details - Build & Crew</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --background-color: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            --gradient-primary: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--background-color);
+            min-height: 100vh;
+            color: var(--primary-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .material-details {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+        }
+
+        .material-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .material-info {
+            margin-bottom: 30px;
+        }
+
+        .material-name {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .material-category {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--secondary-color);
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .material-price {
+            font-size: 1.8em;
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin: 15px 0;
+        }
+
+        .material-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .rating-stars {
+            color: #f1c40f;
+            font-size: 1.2em;
+        }
+
+        .provider-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .provider-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .provider-detail {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .provider-detail i {
+            color: var(--secondary-color);
+        }
+
+        .review-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .review-form {
+            margin-bottom: 30px;
+        }
+
+        .rating-input {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .rating-input i {
+            font-size: 1.5em;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .rating-input i.active {
+            color: #f1c40f;
+        }
+
+        .review-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            margin: 15px 0;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .submit-review {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 200px;
+        }
+
+        .submit-review:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .review-list {
+            margin-top: 30px;
+        }
+
+        .review-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .review-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .review-rating {
+            color: #f1c40f;
+            margin: 10px 0;
+        }
+
+        .review-text {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .auth-message {
+            text-align: center;
+            padding: 20px;
+            background: #fff3cd;
+            border-radius: 10px;
+            color: #856404;
+            margin-bottom: 20px;
+        }
+
+        .contact-button {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .quantity-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .quantity-input input {
+            width: 100px;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        .total-price {
+            font-size: 1.4em;
+            color: var(--secondary-color);
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .cart-button {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-button">
+            <i class="bi bi-arrow-left"></i> Back to Home
+        </a>
+
+        <div class="material-details">
+            <div class="row">
+                <div class="col-md-6">
+                    <img id="materialImage" src="" alt="Material Image" class="material-image">
+                </div>
+                <div class="col-md-6">
+                    <div class="material-info">
+                        <h1 id="materialName" class="material-name">Loading...</h1>
+                        <span id="materialCategory" class="material-category">Loading...</span>
+                        <div class="material-rating">
+                            <div class="rating-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                            <span id="materialRating">Loading...</span>
+                        </div>
+                        <div id="materialPrice" class="material-price">Loading...</div>
+                        
+                        <div class="quantity-input">
+                            <label for="quantity">Quantity:</label>
+                            <input type="number" id="quantity" min="1" value="1" onchange="updateTotalPrice()">
+                            <span id="unitType">Loading...</span>
+                        </div>
+                        <div id="totalPrice" class="total-price">Total: ₹0</div>
+
+                        <div class="button-group">
+                            <button class="contact-button" onclick="contactProvider()">
+                                <i class="bi bi-telephone"></i> Contact Provider
+                            </button>
+                            <button class="cart-button" onclick="addToCart()">
+                                <i class="bi bi-cart-plus"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="provider-info">
+                <h3>Provider Information</h3>
+                <div class="provider-detail">
+                    <i class="bi bi-person"></i>
+                    <span id="providerName">Loading...</span>
+                </div>
+                <div class="provider-detail">
+                    <i class="bi bi-building"></i>
+                    <span id="providerCompany">Loading...</span>
+                </div>
+                <div class="provider-detail">
+                    <i class="bi bi-geo-alt"></i>
+                    <span id="providerLocation">Loading...</span>
+                </div>
+                <div class="provider-detail">
+                    <i class="bi bi-telephone"></i>
+                    <span id="providerContact">Loading...</span>
+                </div>
+                <div class="provider-detail">
+                    <i class="bi bi-envelope"></i>
+                    <span id="providerEmail">Loading...</span>
+                </div>
+                <div class="provider-detail">
+                    <i class="bi bi-clock"></i>
+                    <span id="providerHours">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="authMessage" class="auth-message" style="display: none;">
+            Please <a href="login.html">login</a> to submit a review.
+        </div>
+
+        <div class="review-section">
+            <div id="reviewForm" class="review-form">
+                <h3>Write a Review</h3>
+                <div class="rating-input" id="ratingInput">
+                    <i class="bi bi-star" onclick="setRating(1)"></i>
+                    <i class="bi bi-star" onclick="setRating(2)"></i>
+                    <i class="bi bi-star" onclick="setRating(3)"></i>
+                    <i class="bi bi-star" onclick="setRating(4)"></i>
+                    <i class="bi bi-star" onclick="setRating(5)"></i>
+                </div>
+                <textarea class="review-textarea" id="reviewText" placeholder="Write your review here..."></textarea>
+                <button class="submit-review" onclick="submitReview()">Submit Review</button>
+            </div>
+
+            <div class="review-list">
+                <h3>Reviews</h3>
+                <div id="reviewsList">
+                    <!-- Reviews will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentRating = 0;
+        let materialId = null;
+        let basePrice = 0;
+
+        // Get material ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        materialId = urlParams.get('id');
+
+        async function loadMaterialDetails() {
+            try {
+                // Get the specific material directly using the ID
+                const response = await fetch(`/api/materials/${materialId}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                // Check if the response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Server did not return JSON');
+                }
+
+                const material = await response.json();
+                displayMaterialInfo(material);
+                displayReviews(material.reviews || []);
+
+                // Fetch and display provider info
+                if (material.dealerId) {
+                    loadProviderInfo(material.dealerId);
+                } else {
+                    setProviderInfo(null);
+                }
+            } catch (error) {
+                console.error('Error loading material details:', error);
+                alert('Failed to load material details. Please try again later.');
+                displaySampleData();
+            }
+        }
+
+        async function loadProviderInfo(dealerId) {
+            try {
+                const response = await fetch(`/api/dealers/${dealerId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to load provider info');
+                }
+                const dealer = await response.json();
+                setProviderInfo(dealer);
+            } catch (error) {
+                setProviderInfo(null);
+            }
+        }
+
+        function setProviderInfo(dealer) {
+            document.getElementById('providerName').textContent = dealer?.name || 'Not available';
+            document.getElementById('providerCompany').textContent = dealer?.company || 'Not available';
+            document.getElementById('providerLocation').textContent = dealer?.address || 'Not available';
+            document.getElementById('providerContact').textContent = dealer?.phone || 'Not available';
+            document.getElementById('providerEmail').textContent = dealer?.email || 'Not available';
+            document.getElementById('providerHours').textContent = dealer?.workingHours || 'Not available';
+        }
+
+        function displayMaterialInfo(material) {
+            if (!material) {
+                console.error('No material data provided');
+                return;
+            }
+
+            // Update image handling
+            const materialImage = document.getElementById('materialImage');
+            if (material.image) {
+                // Ensure the image path is correct
+                const imagePath = material.image.replace('/uploads/', './uploads/');
+                materialImage.src = imagePath;
+                console.log('Loading image from:', imagePath);
+            } else {
+                materialImage.src = 'https://via.placeholder.com/400x300/f8f9fa/2c3e50.png?text=No+Image+Available';
+            }
+            
+            // Add error handler for images
+            materialImage.onerror = function() {
+                console.error('Failed to load image:', this.src);
+                this.src = 'https://via.placeholder.com/400x300/f8f9fa/2c3e50.png?text=Image+Not+Found';
+                this.onerror = null; // Prevent infinite loops
+            };
+
+            // Safely set text content
+            document.getElementById('materialName').textContent = material.name || 'Unnamed Material';
+            document.getElementById('materialCategory').textContent = material.category || 'Uncategorized';
+            document.getElementById('materialRating').textContent = material.rating ? `${material.rating} out of 5` : 'Not rated yet';
+            document.getElementById('materialPrice').textContent = `₹${material.price || 0} per ${material.unit || 'unit'}`;
+            document.getElementById('unitType').textContent = material.unit || 'unit';
+            basePrice = material.price || 0;
+            updateTotalPrice();
+        }
+
+        function updateTotalPrice() {
+            const quantity = document.getElementById('quantity').value;
+            const total = basePrice * quantity;
+            document.getElementById('totalPrice').textContent = `Total: ₹${total}`;
+        }
+
+        function displayReviews(reviews) {
+            const container = document.getElementById('reviewsList');
+            if (!reviews || reviews.length === 0) {
+                container.innerHTML = '<p>No reviews yet. Be the first to review!</p>';
+                return;
+            }
+
+            // Sort reviews by date (newest first)
+            const sortedReviews = [...reviews].sort((a, b) => 
+                new Date(b.date) - new Date(a.date)
+            );
+
+            container.innerHTML = sortedReviews.map(review => `
+                <div class="review-item">
+                    <div class="review-header">
+                        <span class="reviewer-name">${review.userName}</span>
+                        <span class="review-date">${new Date(review.date).toLocaleDateString()}</span>
+                        </div>
+                    <div class="review-rating">
+                        ${Array(5).fill(0).map((_, i) => 
+                            `<i class="bi bi-star${i < review.rating ? '-fill' : ''}" style="color: #f1c40f;"></i>`
+                        ).join('')}
+                    </div>
+                    <p class="review-text">${review.text}</p>
+                    </div>
+                `).join('');
+        }
+
+        function setRating(rating) {
+            currentRating = rating;
+            updateRatingStars();
+        }
+
+        function updateRatingStars() {
+            const stars = document.querySelectorAll('#ratingInput i');
+            stars.forEach((star, index) => {
+                if (index < currentRating) {
+                    star.className = 'bi bi-star-fill active';
+                } else {
+                    star.className = 'bi bi-star';
+                }
+            });
+        }
+
+        async function submitReview() {
+            try {
+                // Check if user is logged in
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('Please login to submit a review');
+                    return;
+                }
+
+                // Validate rating
+                if (currentRating === 0) {
+                    alert('Please select a rating (1-5 stars)');
+                    return;
+                }
+
+                // Validate review text
+                const reviewText = document.getElementById('reviewText').value.trim();
+                if (!reviewText) {
+                    alert('Please write a review');
+                    return;
+                }
+
+                // Submit review
+                const response = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        itemId: materialId,
+                        itemType: 'material',
+                        rating: currentRating,
+                        text: reviewText
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Review submitted successfully!');
+                    // Reset form
+                    document.getElementById('reviewText').value = '';
+                    currentRating = 0;
+                    updateRatingStars();
+                    // Reload material details to show new review
+                    await loadMaterialDetails();
+                } else {
+                    throw new Error(data.error || 'Failed to submit review');
+                }
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                alert(error.message || 'Failed to submit review. Please try again.');
+            }
+        }
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const reviewForm = document.getElementById('reviewForm');
+            const authMessage = document.getElementById('authMessage');
+
+            if (!token) {
+                reviewForm.style.display = 'none';
+                authMessage.style.display = 'block';
+            } else {
+                reviewForm.style.display = 'block';
+                authMessage.style.display = 'none';
+            }
+        }
+
+        function contactProvider() {
+            const contact = document.getElementById('providerContact').textContent;
+            if (contact && contact !== 'Loading...') {
+                window.location.href = `tel:${contact}`;
+            } else {
+                alert('Contact information not available');
+            }
+        }
+
+        function displaySampleData() {
+            const sampleMaterial = {
+                id: materialId,
+                name: "Premium Sand",
+                category: "Construction Materials",
+                rating: 4.5,
+                price: 2500,
+                unit: "ton",
+                image: "./images/sand.jpg", // Update image path to relative path
+                provider: {
+                    name: "Ravi S",
+                    company: "Build Materials",
+                    location: "456 Builder Road, Hyderabad",
+                    contact: "9078987098",
+                    email: "ravi@gmail.com",
+                    workingHours: "Mon-Sat: 9 AM - 6 PM"
+                },
+                reviews: [
+                    {
+                        userName: "Amit Kumar",
+                        date: "2024-03-15",
+                        rating: 5,
+                        text: "Excellent quality sand, perfect for construction."
+                    },
+                    {
+                        userName: "Priya Patel",
+                        date: "2024-03-10",
+                        rating: 4,
+                        text: "Good quality but slightly expensive."
+                    }
+                ]
+            };
+
+            displayMaterialInfo(sampleMaterial);
+            displayReviews(sampleMaterial.reviews);
+        }
+
+        function addToCart() {
+            const materialId = new URLSearchParams(window.location.search).get('id');
+            const priceText = document.querySelector('.material-price').textContent;
+            const price = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
+            
+            const material = {
+                id: materialId,
+                name: document.querySelector('h1').textContent,
+                price: price,
+                quantity: parseInt(document.querySelector('input[type="number"]').value) || 1,
+                image: document.querySelector('.material-image')?.src
+            };
+
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const existingItem = cart.find(item => item.id === materialId);
+            
+            if (existingItem) {
+                existingItem.quantity = parseInt(existingItem.quantity) + parseInt(material.quantity);
+            } else {
+                cart.push(material);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert('Added to cart successfully!');
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadMaterialDetails();
+        });
+    </script>
+</body>
+</html> 

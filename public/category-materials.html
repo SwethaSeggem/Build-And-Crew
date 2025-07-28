@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Materials - Build & Crew</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --background-color: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--primary-color);
+            padding: 40px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-button {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+            color: white;
+        }
+
+        .category-title {
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .category-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        .material-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .material-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .material-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .material-card h3 {
+            color: var(--primary-color);
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .material-card .text-muted {
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .material-card .price {
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: auto;
+        }
+
+        .search-container {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            border: 2px solid var(--secondary-color);
+            border-radius: 25px;
+            padding: 10px 20px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .material-card {
+                padding: 15px;
+            }
+            
+            .category-title {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-button">
+            <i class="bi bi-arrow-left"></i> Back to Categories
+        </a>
+
+        <h1 class="category-title" id="categoryName"></h1>
+
+        <div class="search-container">
+            <div class="input-group">
+                <input type="text" class="form-control search-input" id="locationSearch" placeholder="Search by location..." oninput="filterByLocation()">
+                <button class="btn btn-primary" type="button" onclick="filterByLocation()">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="row" id="materialsContainer">
+            <!-- Materials will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        let allMaterials = [];
+        let dealers = [];
+
+        // Load dealers data
+        async function loadDealers() {
+            try {
+                const response = await fetch('/api/dealers');
+                if (!response.ok) {
+                    throw new Error('Failed to load dealers');
+                }
+                dealers = await response.json();
+            } catch (error) {
+                console.error('Error loading dealers:', error);
+            }
+        }
+
+        async function loadCategoryMaterials() {
+            try {
+                const category = new URLSearchParams(window.location.search).get('category');
+                if (!category) {
+                    throw new Error('Category not specified');
+                }
+
+                // Set category title
+                document.getElementById('categoryName').textContent = category;
+
+                // Fetch materials
+                const response = await fetch('/api/materials');
+                const materials = await response.json();
+                allMaterials = materials;
+
+                // Filter materials by category
+                const categoryMaterials = materials.filter(m => m.category === category);
+
+                // Display materials
+                displayMaterials(categoryMaterials);
+
+            } catch (error) {
+                console.error('Error loading category materials:', error);
+                alert('Failed to load materials. Please try again later.');
+                window.location.href = 'index.html';
+            }
+        }
+
+        function displayMaterials(materials) {
+            const materialsContainer = document.getElementById('materialsContainer');
+            materialsContainer.innerHTML = materials.map(material => `
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="material-card" onclick="window.location.href='material.html?id=${material.id}'">
+                        <img src="${material.image || 'https://via.placeholder.com/400x300/f8f9fa/2c3e50.png?text=Material+Image'}" 
+                             alt="${material.name}" 
+                             class="material-image">
+                        <h3>${material.name}</h3>
+                        <p class="text-muted">
+                            ${material.description}<br>
+                            <strong>Supplier:</strong> ${material.supplier || 'Not specified'}
+                        </p>
+                        <div class="price">₹${material.price} per ${material.unit}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterByLocation() {
+            const locationSearch = document.getElementById('locationSearch').value.toLowerCase();
+            const category = new URLSearchParams(window.location.search).get('category');
+            const categoryMaterials = allMaterials.filter(m => m.category === category);
+            
+            const filteredMaterials = categoryMaterials.filter(material => {
+                const dealer = dealers.find(d => d.company === material.supplier);
+                return dealer && dealer.address && dealer.address.toLowerCase().includes(locationSearch);
+            });
+            
+            displayMaterials(filteredMaterials);
+        }
+
+        // Load materials and dealers when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDealers();
+            loadCategoryMaterials();
+        });
+    </script>
+</body>
+</html> 

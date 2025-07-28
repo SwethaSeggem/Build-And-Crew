@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Build & Crew</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .register-container {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .register-header h1 {
+            color: var(--secondary-color);
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .nav-tabs {
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: var(--secondary-color);
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            background: none;
+        }
+
+        .nav-tabs .nav-link:hover {
+            border: none;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .form-control {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+        }
+
+        .register-button {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1.1em;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .register-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--primary-color);
+        }
+
+        .error-message {
+            color: var(--accent-color);
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+            display: none;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .tab-content {
+            display: block;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.show.active {
+            display: block;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <h1>Create Account</h1>
+            <p>Join Build & Crew to get started</p>
+        </div>
+
+        <ul class="nav nav-tabs" id="registerTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="user-tab" data-bs-toggle="tab" data-bs-target="#user" type="button" role="tab">User</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="worker-tab" data-bs-toggle="tab" data-bs-target="#worker" type="button" role="tab">Worker</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="dealer-tab" data-bs-toggle="tab" data-bs-target="#dealer" type="button" role="tab">Dealer</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="registerTabContent">
+            <!-- User Registration Form -->
+            <div class="tab-pane fade show active" id="user" role="tabpanel">
+                <form id="userRegisterForm" onsubmit="handleRegister(event, 'user')">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="userFirstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="userFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="userLastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="userLastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="userEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userPhone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="userPhone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="userUsername" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="userPassword" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userConfirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="userConfirmPassword" required>
+                    </div>
+
+                    <button type="submit" class="register-button">
+                        <i class="bi bi-person-plus"></i> Register as User
+                    </button>
+                </form>
+            </div>
+
+            <!-- Worker Registration Form -->
+            <div class="tab-pane fade" id="worker" role="tabpanel">
+                <form id="workerRegisterForm" onsubmit="handleRegister(event, 'worker')">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="workerFirstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="workerFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="workerLastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="workerLastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workerEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="workerEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workerPhone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="workerPhone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workerSpecialty" class="form-label">Specialty</label>
+                        <select class="form-control" id="workerSpecialty" required>
+                            <option value="">Select your specialty</option>
+                            <option value="carpenter">Carpenter</option>
+                            <option value="electrician">Electrician</option>
+                            <option value="plumber">Plumber</option>
+                            <option value="mason">Mason</option>
+                            <option value="painter">Painter</option>
+                            <option value="welder">Welder</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workerExperience" class="form-label">Years of Experience</label>
+                        <input type="number" class="form-control" id="workerExperience" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workerUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="workerUsername" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workerPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="workerPassword" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workerConfirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="workerConfirmPassword" required>
+                    </div>
+
+                    <button type="submit" class="register-button">
+                        <i class="bi bi-person-plus"></i> Register as Worker
+                    </button>
+                </form>
+            </div>
+
+            <!-- Dealer Registration Form -->
+            <div class="tab-pane fade" id="dealer" role="tabpanel">
+                <form id="dealerRegisterForm" onsubmit="handleRegister(event, 'dealer')">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dealerFirstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="dealerFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dealerLastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="dealerLastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dealerEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="dealerEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dealerPhone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="dealerPhone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dealerCompany" class="form-label">Company Name</label>
+                        <input type="text" class="form-control" id="dealerCompany" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dealerAddress" class="form-label">Business Address</label>
+                        <textarea class="form-control" id="dealerAddress" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dealerUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="dealerUsername" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dealerPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="dealerPassword" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dealerConfirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="dealerConfirmPassword" required>
+                    </div>
+
+                    <button type="submit" class="register-button">
+                        <i class="bi bi-person-plus"></i> Register as Dealer
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <div class="login-link">
+            Already have an account? <a href="login.html">Login here</a>
+        </div>
+
+        <a href="index.html" class="back-link">
+            <i class="bi bi-arrow-left"></i> Back to Home
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function handleRegister(event, userType) {
+            event.preventDefault();
+            
+            const form = document.getElementById(`${userType}RegisterForm`);
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Get all form data
+            const formData = {
+                firstName: document.getElementById(`${userType}FirstName`).value,
+                lastName: document.getElementById(`${userType}LastName`).value,
+                email: document.getElementById(`${userType}Email`).value,
+                phone: document.getElementById(`${userType}Phone`).value,
+                username: document.getElementById(`${userType}Username`).value,
+                password: document.getElementById(`${userType}Password`).value,
+                confirmPassword: document.getElementById(`${userType}ConfirmPassword`).value,
+                role: userType
+            };
+
+            // Add additional fields based on user type
+            if (userType === 'worker') {
+                formData.specialty = document.getElementById('workerSpecialty').value;
+                formData.experience = document.getElementById('workerExperience').value;
+            } else if (userType === 'dealer') {
+                formData.company = document.getElementById('dealerCompany').value;
+                formData.address = document.getElementById('dealerAddress').value;
+            }
+
+            // Validate passwords match
+            if (formData.password !== formData.confirmPassword) {
+                errorMessage.textContent = 'Passwords do not match';
+                errorMessage.style.display = 'block';
+                form.classList.add('shake');
+                setTimeout(() => form.classList.remove('shake'), 500);
+                return;
+            }
+
+            // Always use /api/register for all user types
+            let endpoint = '/api/register';
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Registration successful, redirect to login
+                    window.location.href = 'login.html';
+                } else {
+                    // Show error message
+                    errorMessage.textContent = data.error || data.message || 'Registration failed. Please try again.';
+                    errorMessage.style.display = 'block';
+                    form.classList.add('shake');
+                    setTimeout(() => form.classList.remove('shake'), 500);
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                errorMessage.textContent = 'An error occurred. Please try again later.';
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        // Check if user is already logged in
+        function checkAuth() {
+            try {
+                const token = localStorage.getItem('token');
+                if (token) {
+                    const userString = localStorage.getItem('user');
+                    const user = userString ? JSON.parse(userString) : null;
+                    
+                    if (user && user.role === 'admin') {
+                        window.location.href = 'admin-dashboard.html';
+                    } else if (user) {
+                        window.location.href = 'index.html';
+                    }
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+                // Clear potentially corrupted data
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+            }
+        }
+
+        // Run auth check when page loads
+        checkAuth();
+    </script>
+</body>
+</html> 

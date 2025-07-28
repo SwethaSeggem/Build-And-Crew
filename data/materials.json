@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1745512353074",
+    "name": "Brick",
+    "category": "Bricks",
+    "price": 6,
+    "unit": "piece",
+    "description": "red clay bricks",
+    "inStock": true,
+    "supplier": "abc",
+    "dealerId": "1745510529050",
+    "image": "/uploads/1745512353064-276451212.jpg"
+  },
+  {
+    "id": "1745730740662",
+    "name": "Sand",
+    "category": "Sand",
+    "price": 2500,
+    "unit": "ton",
+    "description": "Fine Sand",
+    "inStock": true,
+    "supplier": "Build Materials",
+    "dealerId": "1745730693895",
+    "image": "/uploads/1745730740654-277547722.jpg",
+    "reviews": [
+      {
+        "id": "1745826176213",
+        "userId": "1745675646016",
+        "userName": "sam05",
+        "rating": 4,
+        "text": "The Material Quality is Good",
+        "date": "2025-04-28T07:42:56.213Z"
+      }
+    ],
+    "rating": 4
+  },
+  {
+    "id": "1745755539189",
+    "name": "Bricks",
+    "category": "Bricks",
+    "price": 5,
+    "unit": "piece",
+    "description": "Clay Bricks",
+    "inStock": true,
+    "supplier": "Build Materials",
+    "dealerId": "1745730693895",
+    "image": "/uploads/1745755742417-182915447.jpeg"
+  },
+  {
+    "id": "1746176128542",
+    "name": "Tiles",
+    "category": "Sanitary",
+    "price": 180,
+    "unit": "piece",
+    "description": "24*24 inches",
+    "inStock": true,
+    "supplier": "Akshith Materials",
+    "dealerId": "1746174587729",
+    "image": "/uploads/1746176128533-760639946.jpg",
+    "createdAt": "2025-05-02T08:55:28.542Z"
+  }
+]

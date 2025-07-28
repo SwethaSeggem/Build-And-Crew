@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build & Crew</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --background-color: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            --gradient-primary: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            --gradient-secondary: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--primary-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 60px 0;
+            background: var(--gradient-secondary);
+            color: white;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover;
+            opacity: 0.1;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin: 0 0 20px;
+            font-size: 3.5em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .hero-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2em;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .search-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin: -30px auto 40px;
+            position: relative;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 1200px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: white;
+            height: 55px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-box .auth-btn {
+            height: 55px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .search-box #userSection {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        .search-box .badge {
+            position: relative;
+            top: -2px;
+            padding: 6px 8px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-size: 2em;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .material-card, .worker-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+            height: 100%;
+            border: 1px solid rgba(221, 221, 221, 0.3);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .material-card::before, .worker-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .material-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+            transition: transform 0.3s ease;
+        }
+
+        .material-card:hover .material-image,
+        .worker-card:hover .worker-image {
+            transform: scale(1.05);
+        }
+
+        .material-card:hover, .worker-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .material-card h3, .worker-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        .price {
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1.3em;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .rating {
+            color: #f1c40f;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .badge-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .auth-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .auth-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .skill-tag {
+            background: #e9ecef;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(221, 221, 221, 0.3);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .category-icon {
+            font-size: 1.5em;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 10px;
+        }
+
+        .category-card h3 {
+            color: var(--primary-color);
+            font-size: 1em;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .category-card p {
+            color: #666;
+            font-size: 0.75em;
+            margin: 0;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        .worker-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+            height: 100%;
+            border: 1px solid rgba(221, 221, 221, 0.3);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .worker-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .worker-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .worker-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+            transition: transform 0.3s ease;
+        }
+
+        .worker-card:hover .worker-image {
+            transform: scale(1.05);
+        }
+
+        .worker-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        .availability-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9em;
+            z-index: 1;
+        }
+
+        .availability-badge.available {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .availability-badge.unavailable {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+
+        .worker-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #f1c40f;
+            margin: 10px 0;
+        }
+
+        .worker-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .worker-info p {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .worker-info i {
+            color: var(--secondary-color);
+            font-size: 1.1em;
+        }
+
+        .worker-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .worker-skill-tag {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--secondary-color);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+
+        .worker-skill-tag:hover {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .worker-category-card {
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(221, 221, 221, 0.3);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .worker-category-icon {
+            font-size: 1.2em;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+        }
+
+        .worker-category-card h3 {
+            color: var(--primary-color);
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .worker-category-card p {
+            color: #666;
+            font-size: 0.7em;
+            margin: 0;
+        }
+
+        .worker-categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .review-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .review-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-review {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        .rating-input {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .rating-input i {
+            font-size: 1.5em;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .rating-input i.active {
+            color: #f1c40f;
+        }
+
+        .review-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            margin: 15px 0;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .review-textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .submit-review {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-review:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .reviews-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .review-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .review-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .review-rating {
+            color: #f1c40f;
+            margin: 5px 0;
+        }
+
+        .review-text {
+            color: #333;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .search-container {
+                padding: 20px;
+                margin: -20px auto 30px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .material-card, .worker-card {
+            padding: 20px;
+            }
+
+            .search-box {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .search-box input {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .search-box .auth-btn {
+                flex: 0 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+    <div class="container">
+            <h1>Build & Crew</h1>
+            <p class="hero-subtitle">Your one-stop platform for construction materials and skilled workers</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search for materials or workers...">
+                <button class="auth-btn ms-2" onclick="performSearch()">
+                    <i class="bi bi-search"></i> Search
+                </button>
+                <a href="cart.html" class="auth-btn ms-2">
+                    <i class="bi bi-cart3"></i>
+                    <span id="cartCount" class="badge bg-light text-dark">0</span>
+                </a>
+                <div id="userSection" class="ms-2">
+                    <div id="userInfo" style="display: none;" class="user-info">
+                        <span class="user-name"></span>
+                        <button onclick="logout()" class="auth-btn ms-2">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </button>
+                    </div>
+                    <div id="authButtons">
+                        <a href="login.html" class="auth-btn">
+                            <i class="bi bi-box-arrow-in-right"></i> Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><i class="bi bi-grid"></i> Categories</h2>
+            <div class="row" id="categoriesContainer">
+                <!-- Categories will be loaded here -->
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><i class="bi bi-box"></i> Popular Materials</h2>
+            <div class="row" id="materialsContainer">
+                <!-- Materials will be loaded here -->
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><i class="bi bi-people"></i> Workers</h2>
+            <div class="worker-categories-grid" id="workerCategoriesContainer">
+                <!-- Worker categories will be loaded here -->
+            </div>
+            <div class="row" id="workersContainer">
+                <!-- Workers will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div class="review-modal" id="reviewModal">
+        <div class="review-content">
+            <span class="close-review" onclick="closeReviewModal()">&times;</span>
+            <h3>Write a Review</h3>
+            <div class="rating-input" id="ratingInput">
+                <i class="bi bi-star" onclick="setRating(1)"></i>
+                <i class="bi bi-star" onclick="setRating(2)"></i>
+                <i class="bi bi-star" onclick="setRating(3)"></i>
+                <i class="bi bi-star" onclick="setRating(4)"></i>
+                <i class="bi bi-star" onclick="setRating(5)"></i>
+            </div>
+            <textarea class="review-textarea" id="reviewText" placeholder="Write your review here..."></textarea>
+            <button class="submit-review" onclick="submitReview()">Submit Review</button>
+        </div>
+    </div>
+
+    <script>
+        let allMaterials = [];
+        let allWorkers = [];
+        let currentRating = 0;
+        let currentItemId = null;
+        let currentItemType = null; // 'material' or 'worker'
+
+        // Fetch and display materials
+        async function loadMaterials() {
+            try {
+                const response = await fetch('/api/materials');
+                const materials = await response.json();
+                allMaterials = materials; // Store all materials
+                displayMaterials(materials);
+                displayPopularMaterials(materials);
+            } catch (error) {
+                console.error('Error loading materials:', error);
+                displaySampleMaterials();
+            }
+        }
+
+        function displayMaterials(materials) {
+            const container = document.getElementById('categoriesContainer');
+            
+            // Get unique categories
+            const categories = [...new Set(materials.map(material => material.category))];
+
+            // Create HTML for each category
+            container.innerHTML = `
+                <div class="categories-grid">
+                    ${categories.map(category => `
+                        <div class="category-card" onclick="window.location.href='category-materials.html?category=${encodeURIComponent(category)}'">
+                            <div class="category-icon">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                            <h3>${category}</h3>
+                            <p>View Materials</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Display popular materials
+            const materialsContainer = document.getElementById('materialsContainer');
+            const popularMaterials = materials.length > 8 
+                ? materials.sort(() => 0.5 - Math.random()).slice(0, 8)
+                : materials;
+
+            materialsContainer.innerHTML = popularMaterials.map(material => `
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="material-card" onclick="window.location.href='material.html?id=${material.id}'">
+                        <img src="${material.image || 'https://via.placeholder.com/400x300/f8f9fa/2c3e50.png?text=Material+Image'}" 
+                             alt="${material.name}" 
+                             class="material-image">
+                        <h3>${material.name}</h3>
+                        <p class="text-muted">${material.description}</p>
+                        <div class="price">₹${material.price} per ${material.unit}</div>
+                        <div class="rating">
+                            <i class="bi bi-star-fill"></i> ${material.rating || 'Not rated yet'}
+                        </div>
+                        <button class="auth-btn" style="margin-top: 15px;" onclick="event.stopPropagation(); window.location.href='reviews.html?id=${material.id}&type=material'">
+                            <i class="bi bi-star"></i> Rate & Review
+                        </button>
+                        ${material.reviews && material.reviews.length > 0 ? `
+                            <div class="reviews-section">
+                                <h4>Recent Reviews</h4>
+                                ${material.reviews.slice(0, 2).map(review => `
+                                    <div class="review-item">
+                                        <div class="review-header">
+                                            <span class="reviewer-name">${review.userName}</span>
+                                            <span class="review-date">${new Date(review.date).toLocaleDateString()}</span>
+                                        </div>
+                                        <div class="review-rating">
+                                            ${'<i class="bi bi-star-fill"></i>'.repeat(review.rating)}
+                                        </div>
+                                        <p class="review-text">${review.text}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayPopularMaterials(materials) {
+            const container = document.getElementById('materialsContainer');
+            if (!materials || materials.length === 0) {
+                displaySampleMaterials();
+                return;
+            }
+
+            // Get 8 random materials or all if less than 8
+            const popularMaterials = materials.length > 8 
+                ? materials.sort(() => 0.5 - Math.random()).slice(0, 8)
+                : materials;
+
+            container.innerHTML = popularMaterials.map(material => `
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="material-card" onclick="window.location.href='material.html?id=${material.id}'">
+                        <img src="${material.image || 'https://via.placeholder.com/400x300/f8f9fa/2c3e50.png?text=Material+Image'}" 
+                             alt="${material.name}" 
+                             class="material-image">
+                        <h3>${material.name}</h3>
+                        <p class="text-muted">${material.description}</p>
+                        <div class="price">₹${material.price} per ${material.unit}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displaySampleMaterials() {
+            const container = document.getElementById('materialsContainer');
+            const sampleMaterials = [
+                {
+                    id: 1,
+                    name: "Premium Cement",
+                    description: "High-quality cement for strong foundations",
+                    price: 450,
+                    unit: "bag",
+                    image: "https://images.unsplash.com/photo-1581094794329-c8112c4e3f1f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                    rating: 4.5,
+                    reviews: [
+                        {
+                            userName: "Rahul Sharma",
+                            date: "2024-03-15",
+                            rating: 5,
+                            text: "Excellent quality cement. Very strong and durable."
+                        },
+                        {
+                            userName: "Priya Patel",
+                            date: "2024-03-10",
+                            rating: 4,
+                            text: "Good quality but a bit expensive."
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Steel Bars",
+                    description: "TMT steel bars for reinforced concrete",
+                    price: 65000,
+                    unit: "ton",
+                    image: "https://images.unsplash.com/photo-1581094794329-c8112c4e3f1f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                    rating: 4.8,
+                    reviews: [
+                        {
+                            userName: "Amit Kumar",
+                            date: "2024-03-12",
+                            rating: 5,
+                            text: "Best quality TMT bars I've used."
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "Bricks",
+                    description: "High-quality red bricks for construction",
+                    price: 8,
+                    unit: "piece",
+                    image: "https://images.unsplash.com/photo-1581094794329-c8112c4e3f1f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                },
+                {
+                    id: 4,
+                    name: "Sand",
+                    description: "Fine quality construction sand",
+                    price: 1200,
+                    unit: "truck",
+                    image: "https://images.unsplash.com/photo-1581094794329-c8112c4e3f1f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                },
+                {
+                    id: 5,
+                    name: "Tiles",
+                    description: "Ceramic floor tiles",
+                    price: 45,
+                    unit: "sq.ft",
+                    image: "https://images.unsplash.com/photo-1581094794329-c8112c4e3f1f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                },
+                {
+                    id: 6,
+                    name: "Plywood",
+                    description: "High-grade plywood sheets",
+                    price: 1200,
+                    unit: "sheet",
+                    image: "https://images.unsplash.com/photo-1581094794329-c8112c4e3f1f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                },
+                {
+                    id: 7,
+                    name: "Paint",
+                    description: "Premium exterior paint",
+                    price: 1200,
+                    unit: "liter",
+                    image: "https://images.unsplash.com/photo-1581094794329-c8112c4e3f1f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                },
+                {
+                    id: 8,
+                    name: "PVC Pipes",
+                    description: "Durable PVC plumbing pipes",
+                    price: 150,
+                    unit: "meter",
+                    image: "https://images.unsplash.com/photo-1581094794329-c8112c4e3f1f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                }
+            ];
+
+            container.innerHTML = sampleMaterials.map(material => `
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="material-card" onclick="window.location.href='material.html?id=${material.id}'">
+                        <img src="${material.image}" 
+                             alt="${material.name}" 
+                             class="material-image">
+                        <h3>${material.name}</h3>
+                        <p class="text-muted">${material.description}</p>
+                        <div class="price">₹${material.price} per ${material.unit}</div>
+                        <div class="rating">
+                            <i class="bi bi-star-fill"></i> ${material.rating || 'Not rated yet'}
+                        </div>
+                        <button class="auth-btn" style="margin-top: 15px;" onclick="event.stopPropagation(); window.location.href='reviews.html?id=${material.id}&type=material'">
+                            <i class="bi bi-star"></i> Rate & Review
+                        </button>
+                        ${material.reviews && material.reviews.length > 0 ? `
+                            <div class="reviews-section">
+                                <h4>Recent Reviews</h4>
+                                ${material.reviews.slice(0, 2).map(review => `
+                                    <div class="review-item">
+                                        <div class="review-header">
+                                            <span class="reviewer-name">${review.userName}</span>
+                                            <span class="review-date">${new Date(review.date).toLocaleDateString()}</span>
+                                        </div>
+                                        <div class="review-rating">
+                                            ${'<i class="bi bi-star-fill"></i>'.repeat(review.rating)}
+                                        </div>
+                                        <p class="review-text">${review.text}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Fetch and display workers
+        async function loadWorkers() {
+            try {
+                const response = await fetch('/api/workers');
+                const workers = await response.json();
+                allWorkers = workers; // Store all workers
+                console.log('Loaded workers:', workers); // Debug log
+                displayWorkerCategories(workers);
+                displayWorkers(workers);
+            } catch (error) {
+                console.error('Error loading workers:', error);
+                displaySampleWorkers();
+            }
+        }
+
+        function displayWorkerCategories(workers) {
+            const container = document.getElementById('workerCategoriesContainer');
+            
+            // Get unique specialties
+            const specialties = [...new Set(workers.map(worker => worker.specialty))];
+
+            // Create HTML for each category
+            container.innerHTML = `
+                ${specialties.map(specialty => `
+                    <div class="worker-category-card" onclick="filterWorkers('${specialty}')">
+                        <div class="worker-category-icon">
+                            <i class="bi bi-person-badge"></i>
+                        </div>
+                        <h3>${specialty}</h3>
+                        <p>View Workers</p>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function displayWorkers(workers) {
+            const container = document.getElementById('workersContainer');
+            if (!container) {
+                console.error('Workers container not found');
+                return;
+            }
+
+            if (!workers || workers.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center"><p>No workers available at the moment.</p></div>';
+                return;
+            }
+
+            container.innerHTML = workers.map(worker => `
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="worker-card" onclick="window.location.href='worker.html?id=${worker.id}'">
+                        <div class="availability-badge ${worker.available ? 'available' : 'unavailable'}">
+                            ${worker.available ? 'Available' : 'Unavailable'}
+                        </div>
+                        <h3>${worker.name || 'Unnamed Worker'}</h3>
+                        <div class="badge badge-primary">${worker.specialty || 'General Worker'}</div>
+                        <div class="worker-rating">
+                            <i class="bi bi-star-fill"></i> ${worker.rating || 'Not rated yet'}
+                        </div>
+                        <div class="worker-info">
+                            <p><i class="bi bi-briefcase"></i> <strong>Experience:</strong> ${worker.experience || 'Not specified'}</p>
+                            <p><i class="bi bi-cash"></i> <strong>Rate:</strong> ₹${worker.rate || 'Not specified'} per day</p>
+                            <p><i class="bi bi-geo-alt"></i> <strong>Location:</strong> ${worker.location || 'Not specified'}</p>
+                        </div>
+                        <div class="worker-skills">
+                            ${(worker.skills && worker.skills.length > 0) 
+                                ? worker.skills.map(skill => `<span class="worker-skill-tag">${skill}</span>`).join('')
+                                : '<span class="worker-skill-tag">No skills listed</span>'}
+                        </div>
+                        ${worker.reviews && worker.reviews.length > 0 ? `
+                            <div class="reviews-section">
+                                <h4>Recent Reviews</h4>
+                                ${worker.reviews.slice(0, 2).map(review => `
+                                    <div class="review-item">
+                                        <div class="review-header">
+                                            <span class="reviewer-name">${review.userName}</span>
+                                            <span class="review-date">${new Date(review.date).toLocaleDateString()}</span>
+                                        </div>
+                                        <div class="review-rating">
+                                            ${'<i class="bi bi-star-fill"></i>'.repeat(review.rating)}
+                                        </div>
+                                        <p class="review-text">${review.text}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterWorkers(specialty) {
+            const filteredWorkers = allWorkers.filter(worker => worker.specialty === specialty);
+            displayWorkers(filteredWorkers);
+        }
+
+        function displaySampleWorkers() {
+            const sampleWorkers = [
+                {
+                    id: 1,
+                    name: "Rajesh Kumar",
+                    specialty: "Mason",
+                    available: true,
+                    rating: 4.8,
+                    experience: "15 years",
+                    rate: 1200,
+                    location: "Mumbai",
+                    skills: ["Brickwork", "Plastering", "Tiling"],
+                    reviews: [
+                        {
+                            userName: "Vikram Singh",
+                            date: "2024-03-14",
+                            rating: 5,
+                            text: "Excellent workmanship and very professional."
+                        },
+                        {
+                            userName: "Anita Desai",
+                            date: "2024-03-08",
+                            rating: 4,
+                            text: "Good worker, completed the job on time."
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Amit Singh",
+                    specialty: "Carpenter",
+                    available: true,
+                    rating: 4.6,
+                    experience: "12 years",
+                    rate: 1000,
+                    location: "Delhi",
+                    skills: ["Furniture", "Doors", "Windows"],
+                    reviews: [
+                        {
+                            userName: "Rahul Verma",
+                            date: "2024-03-10",
+                            rating: 5,
+                            text: "Skilled carpenter, very satisfied with the work."
+                        }
+                    ]
+                }
+            ];
+
+            displayWorkerCategories(sampleWorkers);
+            displayWorkers(sampleWorkers);
+        }
+
+        // Search functionality
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            // Filter materials
+            const filteredMaterials = allMaterials.filter(material => 
+                material.name.toLowerCase().includes(searchTerm) ||
+                material.category.toLowerCase().includes(searchTerm) ||
+                material.description.toLowerCase().includes(searchTerm) ||
+                material.supplier?.toLowerCase().includes(searchTerm)
+            );
+            displayMaterials(filteredMaterials);
+
+            // Filter workers
+            const filteredWorkers = allWorkers.filter(worker => 
+                (worker.name && worker.name.toLowerCase().includes(searchTerm)) ||
+                (worker.specialty && worker.specialty.toLowerCase().includes(searchTerm)) ||
+                (worker.experience && worker.experience.toLowerCase().includes(searchTerm)) ||
+                (worker.location && worker.location.toLowerCase().includes(searchTerm)) ||
+                (worker.skills && worker.skills.some(skill => skill.toLowerCase().includes(searchTerm)))
+            );
+            displayWorkers(filteredWorkers);
+        }
+
+        // Add event listener for real-time search
+        document.getElementById('searchInput').addEventListener('input', performSearch);
+
+        // Check authentication status and update UI
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const userInfo = document.getElementById('userInfo');
+            const authButtons = document.getElementById('authButtons');
+            
+            if (token) {
+                try {
+                    const userString = localStorage.getItem('user');
+                    const user = userString ? JSON.parse(userString) : {};
+                    
+                    if (user && user.username) {
+                        userInfo.style.display = 'flex';
+                        authButtons.style.display = 'none';
+                        userInfo.querySelector('.user-name').textContent = `Welcome, ${user.username}`;
+                    } else {
+                        // Invalid user data, clear storage and show login
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                        userInfo.style.display = 'none';
+                        authButtons.style.display = 'flex';
+                    }
+                } catch (error) {
+                    console.error('Error parsing user data:', error);
+                    // Clear invalid data
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    userInfo.style.display = 'none';
+                    authButtons.style.display = 'flex';
+                }
+            } else {
+                userInfo.style.display = 'none';
+                authButtons.style.display = 'flex';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.reload();
+        }
+
+        // Run auth check when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadMaterials();
+            loadWorkers();
+        });
+
+        function openReviewModal(itemId, itemType) {
+            currentItemId = itemId;
+            currentItemType = itemType;
+            document.getElementById('reviewModal').style.display = 'flex';
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').style.display = 'none';
+            currentRating = 0;
+            document.getElementById('reviewText').value = '';
+            updateRatingStars();
+        }
+
+        function setRating(rating) {
+            currentRating = rating;
+            updateRatingStars();
+        }
+
+        function updateRatingStars() {
+            const stars = document.querySelectorAll('#ratingInput i');
+            stars.forEach((star, index) => {
+                star.classList.toggle('active', index < currentRating);
+            });
+        }
+
+        async function submitReview() {
+            if (currentRating === 0) {
+                alert('Please select a rating');
+                return;
+            }
+
+            const reviewText = document.getElementById('reviewText').value.trim();
+            if (!reviewText) {
+                alert('Please write a review');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('Please login to submit a review');
+                    return;
+                }
+
+                const response = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        itemId: currentItemId,
+                        itemType: currentItemType,
+                        rating: currentRating,
+                        text: reviewText
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Review submitted successfully');
+                    closeReviewModal();
+                    // Refresh the items to show the new review
+                    if (currentItemType === 'material') {
+                        loadMaterials();
+                    } else {
+                        loadWorkers();
+                    }
+                } else {
+                    throw new Error('Failed to submit review');
+                }
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                alert('Failed to submit review. Please try again.');
+            }
+        }
+
+        // Add back the updateCartCount function and its event listener
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+        
+        // Update cart count when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadMaterials();
+            loadWorkers();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html> 

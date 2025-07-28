@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1745730740999",
+    "userId": "1745675646016",
+    "dealerId": "1745730693895",
+    "materialId": "1745730740662",
+    "quantity": 10,
+    "totalPrice": 25000,
+    "status": "delivered",
+    "orderDate": "2024-03-19T10:00:00.000Z",
+    "deliveryAddress": "123 Main St",
+    "contactNumber": "1234567890",
+    "material": {
+      "name": "Sand",
+      "category": "Sand",
+      "unit": "ton"
+    },
+    "updatedAt": "2025-05-02T16:23:00.951Z"
+  }
+]

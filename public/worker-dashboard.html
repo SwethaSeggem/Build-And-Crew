@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .sidebar {
+            min-height: 100vh;
+            background-color: #343a40;
+            color: white;
+        }
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status-toggle {
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+        .status-toggle.available {
+            background-color: #28a745;
+            color: white;
+        }
+        .status-toggle.unavailable {
+            background-color: #dc3545;
+            color: white;
+        }
+        .status-toggle.visible {
+            background-color: #007bff;
+            color: white;
+        }
+        .status-toggle.hidden {
+            background-color: #6c757d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 px-0 sidebar">
+                <div class="d-flex flex-column align-items-center p-3">
+                    <h5 id="workerName">Worker Name</h5>
+                    <p class="text-muted" id="workerSpecialty">Specialty</p>
+                    <div class="status-toggle mb-2" id="availabilityToggle">
+                        <i class="fas fa-circle me-2"></i>
+                        <span>Available</span>
+                    </div>
+                    <div class="status-toggle" id="visibilityToggle">
+                        <i class="fas fa-eye me-2"></i>
+                        <span>Visible to Users</span>
+                    </div>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" id="dashboardLink">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="editProfileLink">
+                            <i class="fas fa-edit me-2"></i>Edit Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutLink">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 p-4">
+                <!-- Dashboard View -->
+                <div id="dashboardView">
+                    <h2 class="mb-4">Worker Dashboard</h2>
+                    
+                    <!-- Worker Details -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">My Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Name:</strong> <span id="workerNameDetails"></span></p>
+                                    <p><strong>Specialty:</strong> <span id="workerSpecialtyDetails"></span></p>
+                                    <p><strong>Contact:</strong> <span id="workerContact"></span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Experience:</strong> <span id="workerExperience"></span></p>
+                                    <p><strong>Location:</strong> <span id="workerLocation"></span></p>
+                                    <p><strong>Rating:</strong> <span id="workerRating"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Booked Users -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Users Who Booked Me</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Customer Name</th>
+                                            <th>Project Details</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bookedUsersBody">
+                                        <!-- Booked users will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Profile View -->
+                <div id="editProfileView" style="display: none;">
+                    <h2 class="mb-4">Edit Profile</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="profileForm">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="editName" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Specialty</label>
+                                        <input type="text" class="form-control" id="editSpecialty" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Contact Number</label>
+                                        <input type="tel" class="form-control" id="editContact" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Location</label>
+                                        <input type="text" class="form-control" id="editLocation" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Experience (in years)</label>
+                                        <input type="number" class="form-control" id="editExperience" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Hourly Rate (₹)</label>
+                                        <input type="number" class="form-control" id="editRate" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Skills (comma separated)</label>
+                                    <input type="text" class="form-control" id="editSkills" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" id="editDescription" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Check if user is logged in and get role from token
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login.html';
+        }
+
+        // Function to decode JWT token
+        function parseJwt(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (e) {
+                console.error('Error parsing token:', e);
+                return null;
+            }
+        }
+
+        // Verify user is a worker
+        const decodedToken = parseJwt(token);
+        if (!decodedToken || decodedToken.role !== 'worker') {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+        }
+
+        // Toggle availability status
+        document.getElementById('availabilityToggle').addEventListener('click', async function() {
+            const isAvailable = this.classList.contains('available');
+            const newStatus = !isAvailable;
+            
+            try {
+                const response = await fetch('/api/worker/availability', {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ available: newStatus })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to update availability');
+                }
+
+                const data = await response.json();
+                
+                this.classList.remove('available', 'unavailable');
+                this.classList.add(newStatus ? 'available' : 'unavailable');
+                this.querySelector('span').textContent = newStatus ? 'Available' : 'Unavailable';
+            } catch (error) {
+                console.error('Error:', error);
+                alert(error.message || 'Failed to update availability status');
+            }
+        });
+
+        // Toggle visibility status
+        document.getElementById('visibilityToggle').addEventListener('click', async function() {
+            const isVisible = this.classList.contains('visible');
+            const newStatus = !isVisible;
+            
+            try {
+                const response = await fetch('/api/worker/visibility', {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ visible: newStatus })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to update visibility');
+                }
+
+                const data = await response.json();
+                
+                this.classList.remove('visible', 'hidden');
+                this.classList.add(newStatus ? 'visible' : 'hidden');
+                this.querySelector('span').textContent = newStatus ? 'Visible to Users' : 'Hidden from Users';
+            } catch (error) {
+                console.error('Error:', error);
+                alert(error.message || 'Failed to update visibility status');
+            }
+        });
+
+        // Fetch worker profile and booked users
+        async function fetchWorkerData() {
+            try {
+                console.log('Fetching worker data with token:', token);
+                const response = await fetch('/api/worker/profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to fetch worker data');
+                }
+
+                const data = await response.json();
+                console.log('Received worker data:', data);
+
+                // Update worker details
+                document.getElementById('workerName').textContent = data.name || 'Not specified';
+                document.getElementById('workerSpecialty').textContent = data.specialty || 'Not specified';
+                document.getElementById('workerNameDetails').textContent = data.name || 'Not specified';
+                document.getElementById('workerSpecialtyDetails').textContent = data.specialty || 'Not specified';
+                document.getElementById('workerContact').textContent = data.contact || 'Not specified';
+                document.getElementById('workerExperience').textContent = data.experience || 'Not specified';
+                document.getElementById('workerLocation').textContent = data.location || 'Not specified';
+                document.getElementById('workerRating').textContent = data.rating || 'Not rated yet';
+
+                // Update availability toggle
+                const availabilityToggle = document.getElementById('availabilityToggle');
+                availabilityToggle.classList.remove('available', 'unavailable');
+                availabilityToggle.classList.add(data.available ? 'available' : 'unavailable');
+                availabilityToggle.querySelector('span').textContent = data.available ? 'Available' : 'Unavailable';
+
+                // Update visibility toggle
+                const visibilityToggle = document.getElementById('visibilityToggle');
+                visibilityToggle.classList.remove('visible', 'hidden');
+                visibilityToggle.classList.add(data.visible ? 'visible' : 'hidden');
+                visibilityToggle.querySelector('span').textContent = data.visible ? 'Visible to Users' : 'Hidden from Users';
+
+                // Update edit form
+                document.getElementById('editName').value = data.name || '';
+                document.getElementById('editSpecialty').value = data.specialty || '';
+                document.getElementById('editContact').value = data.contact || '';
+                document.getElementById('editLocation').value = data.location || '';
+                document.getElementById('editExperience').value = data.experience || '';
+                document.getElementById('editRate').value = data.rate || '';
+                document.getElementById('editSkills').value = data.skills ? data.skills.join(', ') : '';
+                document.getElementById('editDescription').value = data.description || '';
+
+                // Update booked users table
+                const tbody = document.getElementById('bookedUsersBody');
+                tbody.innerHTML = '';
+                
+                if (data.bookings && data.bookings.length > 0) {
+                    data.bookings.forEach(booking => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${booking.name}</td>
+                            <td>${booking.projectDetails}</td>
+                            <td>${new Date(booking.date).toLocaleDateString()}</td>
+                            <td>
+                                <span class="badge ${getStatusBadgeClass(booking.status)}">
+                                    ${booking.status}
+                                </span>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                } else {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="text-center">No bookings yet</td>
+                        </tr>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert(error.message || 'Failed to load worker data');
+            }
+        }
+
+        function getStatusBadgeClass(status) {
+            switch(status) {
+                case 'pending':
+                    return 'bg-warning';
+                case 'confirmed':
+                    return 'bg-success';
+                case 'cancelled':
+                    return 'bg-danger';
+                default:
+                    return 'bg-secondary';
+            }
+        }
+
+        // Handle profile form submission
+        document.getElementById('profileForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            try {
+                const formData = {
+                    name: document.getElementById('editName').value.trim(),
+                    specialty: document.getElementById('editSpecialty').value.trim(),
+                    contact: document.getElementById('editContact').value.trim(),
+                    location: document.getElementById('editLocation').value.trim(),
+                    experience: document.getElementById('editExperience').value.trim(),
+                    rate: document.getElementById('editRate').value.trim(),
+                    skills: document.getElementById('editSkills').value.trim(),
+                    description: document.getElementById('editDescription').value.trim()
+                };
+
+                console.log('Sending update request with data:', formData);
+                const response = await fetch('/api/worker/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const responseText = await response.text();
+                console.log('Server response:', responseText);
+
+                if (!response.ok) {
+                    try {
+                        const errorData = JSON.parse(responseText);
+                        throw new Error(errorData.error || 'Failed to update profile');
+                    } catch (e) {
+                        throw new Error('Server error: ' + responseText);
+                    }
+                }
+
+                const data = JSON.parse(responseText);
+                console.log('Profile updated successfully:', data);
+                alert('Profile updated successfully');
+                await fetchWorkerData(); // Refresh the data
+                document.getElementById('dashboardLink').click(); // Switch back to dashboard view
+            } catch (error) {
+                console.error('Error:', error);
+                alert(error.message || 'Failed to update profile');
+            }
+        });
+
+        // Logout function
+        document.getElementById('logoutLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+        });
+
+        // Handle view switching
+        document.getElementById('dashboardLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('dashboardView').style.display = 'block';
+            document.getElementById('editProfileView').style.display = 'none';
+            document.getElementById('dashboardLink').classList.add('active');
+            document.getElementById('editProfileLink').classList.remove('active');
+        });
+
+        document.getElementById('editProfileLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('dashboardView').style.display = 'none';
+            document.getElementById('editProfileView').style.display = 'block';
+            document.getElementById('dashboardLink').classList.remove('active');
+            document.getElementById('editProfileLink').classList.add('active');
+        });
+
+        // Initial data fetch
+        fetchWorkerData();
+    </script>
+</body>
+</html> 

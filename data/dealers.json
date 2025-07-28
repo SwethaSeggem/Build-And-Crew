@@ -1,0 +1,60 @@
+[
+  {
+    "id": "1745510529050",
+    "username": "s03",
+    "password": "$2b$10$4n9xyDp.Zxc6T327q2jz.Of1ct9wTmGBwv8AZNNBmXiMLWGY.ONie",
+    "firstName": "s",
+    "lastName": "s",
+    "email": "swetha@gmail.com",
+    "phone": "345634455466",
+    "role": "dealer",
+    "createdAt": "2025-04-24T16:02:09.050Z",
+    "company": "abc",
+    "address": "build services",
+    "materials": [],
+    "rating": 4,
+    "workingHours": "Mon-Sat: 9 AM - 6 PM"
+  },
+  {
+    "id": "1745730693895",
+    "username": "S09",
+    "password": "$2b$10$KQ4d/9PhhiQL/WK7eICLw.hO4EDXX6/S/shM/SoBSuAIsFL1N468a",
+    "firstName": "Ravi",
+    "lastName": "S",
+    "email": "Ravii@gmail.com",
+    "phone": "9078987098",
+    "role": "dealer",
+    "company": "Build Materials",
+    "address": "456 Builder Road, Hyderabad",
+    "createdAt": "2025-04-27T05:11:33.895Z",
+    "materials": [],
+    "rating": 4,
+    "workingHours": "Mon-Sat: 9 AM - 6 PM"
+  },
+  {
+    "id": "1746174587729",
+    "username": "akshith09",
+    "password": "$2b$10$oiA24zCH2C33Tj1pI7ztOe6pHVH939iU9I./bk4iqrjMv1URYfMmG",
+    "firstName": "Akshith",
+    "lastName": "K",
+    "email": "akshith@gmail.com",
+    "phone": "8909780990",
+    "role": "dealer",
+    "createdAt": "2025-05-02T08:29:47.729Z",
+    "company": "Akshith Materials",
+    "address": "Warangal"
+  },
+  {
+    "id": "1746175682767",
+    "username": "ramesh09",
+    "password": "$2b$10$GBMYWmHCd8Lvbnqg3qLmjunC6kNoKN2v.dDfAGcwwW/cMvZmn9Y9.",
+    "firstName": "Ramesh",
+    "lastName": "K",
+    "email": "ramesh@gmail.com",
+    "phone": "8909780990",
+    "role": "dealer",
+    "createdAt": "2025-05-02T08:48:02.767Z",
+    "company": "Ramesh Materials",
+    "address": "Hyderabad"
+  }
+]

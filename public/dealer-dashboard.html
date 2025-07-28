@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealer Dashboard - Build & Crew</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--light-bg);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .dealer-info h1 {
+            color: var(--secondary-color);
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        .dealer-info p {
+            color: #666;
+            margin: 5px 0 0 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-custom {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+        }
+
+        .inventory-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .material-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .material-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .material-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .material-info h3 {
+            color: var(--secondary-color);
+            font-size: 1.2em;
+            margin: 0 0 5px 0;
+        }
+
+        .material-price {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 5px 0;
+        }
+
+        .material-stock {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .in-stock {
+            background: rgba(46, 204, 113, 0.1);
+            color: #27ae60;
+        }
+
+        .out-of-stock {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        .modal-body .form-group {
+            margin-bottom: 15px;
+        }
+
+        .orders-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            margin-top: 20px;
+        }
+
+        .order-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .order-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .status-processing {
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+        }
+
+        .status-delivered {
+            background: rgba(46, 204, 113, 0.1);
+            color: #27ae60;
+        }
+
+        .order-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .order-info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+
+        .order-items {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+        }
+
+        .order-total {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .order-total div {
+            margin: 5px 0;
+            text-align: right;
+        }
+
+        .order-total div:last-child {
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: var(--secondary-color);
+        }
+
+        .order-actions {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-accept {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-accept:hover {
+            background-color: #219a52;
+            transform: translateY(-2px);
+        }
+
+        .btn-reject {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-reject:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .status-rejected {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        .status-accepted {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <div class="dealer-info">
+                <h1>Welcome, <span id="dealerName">Dealer</span></h1>
+                <p>Company: <span id="dealerCompany">Company</span></p>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMaterialModal">
+                    <i class="bi bi-plus-circle"></i> Add Material
+                </button>
+                <button class="btn btn-danger" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Inventory Section -->
+        <div class="inventory-section">
+            <div class="section-header">
+                <h2>Inventory Management</h2>
+                <div class="search-box">
+                    <input type="text" class="form-control" placeholder="Search materials..." onkeyup="searchMaterials(this.value)">
+                </div>
+            </div>
+            <div id="inventoryGrid" class="inventory-grid">
+                <!-- Materials will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Orders Section -->
+        <div class="orders-section">
+            <div class="section-header">
+                <h2>Recent Orders</h2>
+                <div class="order-filters">
+                    <select class="form-select" onchange="filterOrders(this.value)">
+                        <option value="all">All Orders</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="delivered">Delivered</option>
+                    </select>
+                </div>
+            </div>
+            <div id="ordersList">
+                <!-- Orders will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Material Modal -->
+    <div class="modal fade" id="addMaterialModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Material</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addMaterialForm" onsubmit="addMaterial(event)">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select class="form-control" name="category" required>
+                                <option value="">Select category</option>
+                                <option value="Lumber">Lumber</option>
+                                <option value="Cement">Cement</option>
+                                <option value="Bricks">Bricks</option>
+                                <option value="Sand">Sand</option>
+                                <option value="Pipes">Pipes</option>
+                                <option value="Sanitary">Sanitary</option>
+                                <option value="Electrical">Electrical</option>
+                                <option value="Paint">Paint</option>
+                                <option value="Tools">Tools</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Price</label>
+                            <input type="number" class="form-control" name="price" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Unit</label>
+                            <input type="text" class="form-control" name="unit" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" name="description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Image</label>
+                            <input type="file" class="form-control" name="image" accept="image/*" required>
+                            <div class="image-preview mt-2" style="display: none;">
+                                <img id="imagePreview" src="" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add Material</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Material Modal -->
+    <div class="modal fade" id="editMaterialModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Material</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editMaterialForm" onsubmit="updateMaterial(event)">
+                        <input type="hidden" name="id" id="editMaterialId">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" name="name" id="editName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select class="form-control" name="category" id="editCategory" required>
+                                <option value="">Select category</option>
+                                <option value="Lumber">Lumber</option>
+                                <option value="Cement">Cement</option>
+                                <option value="Bricks">Bricks</option>
+                                <option value="Sand">Sand</option>
+                                <option value="Pipes">Pipes</option>
+                                <option value="Sanitary">Sanitary</option>
+                                <option value="Electrical">Electrical</option>
+                                <option value="Paint">Paint</option>
+                                <option value="Tools">Tools</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Price</label>
+                            <input type="number" class="form-control" name="price" id="editPrice" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Unit</label>
+                            <input type="text" class="form-control" name="unit" id="editUnit" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" name="description" id="editDescription" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Stock Status</label>
+                            <select class="form-control" name="inStock" id="editInStock" required>
+                                <option value="true">In Stock</option>
+                                <option value="false">Out of Stock</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Image</label>
+                            <input type="file" class="form-control" name="image" accept="image/*">
+                            <div class="image-preview mt-2">
+                                <img id="editImagePreview" src="" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Update Material</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentDealer = null;
+        let dealerMaterials = [];
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            loadDealerProfile();
+            loadDealerMaterials();
+            loadOrders();
+        });
+
+        // Load dealer profile
+        async function loadDealerProfile() {
+            try {
+                const response = await fetch('/api/dealer/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to load profile');
+                }
+
+                const dealer = await response.json();
+                currentDealer = dealer; // Store dealer info for later use
+                document.getElementById('dealerName').textContent = dealer.name;
+                document.getElementById('dealerCompany').textContent = dealer.company;
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                alert('Failed to load dealer profile: ' + error.message);
+            }
+        }
+
+        // Load dealer materials
+        async function loadDealerMaterials() {
+            try {
+                const response = await fetch('/api/materials', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load materials');
+                }
+
+                const materials = await response.json();
+                const dealer = await fetch('/api/dealer/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }).then(res => res.json());
+
+                dealerMaterials = materials.filter(m => m.supplier === dealer.company);
+                displayMaterials(dealerMaterials);
+            } catch (error) {
+                console.error('Error loading materials:', error);
+                alert('Failed to load materials');
+            }
+        }
+
+        // Display materials in the grid
+        function displayMaterials(materials) {
+            const grid = document.getElementById('inventoryGrid');
+            grid.innerHTML = '';
+
+            materials.forEach(material => {
+                const card = document.createElement('div');
+                card.className = 'material-card';
+                card.innerHTML = `
+                    <img src="${material.image || '/assets/images/placeholder.jpg'}" alt="${material.name}" class="material-image">
+                    <div class="material-info">
+                        <h3>${material.name}</h3>
+                        <p class="text-muted">${material.category}</p>
+                        <p class="material-price">₹${material.price} / ${material.unit}</p>
+                        <p>${material.description}</p>
+                        <span class="material-stock ${material.inStock ? 'in-stock' : 'out-of-stock'}">
+                            ${material.inStock ? 'In Stock' : 'Out of Stock'}
+                        </span>
+                        <div class="mt-3">
+                            <button onclick="editMaterial('${material.id}')" class="btn btn-sm btn-primary me-2">Edit</button>
+                            <button onclick="deleteMaterial('${material.id}')" class="btn btn-sm btn-danger">Delete</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Show add material modal
+        function openAddMaterialModal() {
+            const modal = new bootstrap.Modal(document.getElementById('addMaterialModal'));
+            modal.show();
+        }
+
+        // Add new material
+        async function addMaterial(event) {
+            event.preventDefault();
+            const form = document.getElementById('addMaterialForm');
+            const formData = new FormData(form);
+            
+            try {
+                // Add supplier information
+                if (currentDealer && currentDealer.company) {
+                    formData.append('supplier', currentDealer.company);
+                } else {
+                    throw new Error('Dealer company information not found');
+                }
+
+                const response = await fetch('/api/materials', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to add material');
+                }
+
+                const newMaterial = await response.json();
+                await loadDealerMaterials(); // Reload materials after adding new one
+                form.reset();
+                document.querySelector('.image-preview').style.display = 'none';
+                bootstrap.Modal.getInstance(document.getElementById('addMaterialModal')).hide();
+                alert('Material added successfully');
+            } catch (error) {
+                console.error('Error adding material:', error);
+                alert(error.message || 'Failed to add material');
+            }
+        }
+
+        // Preview image before upload
+        document.querySelector('#addMaterialModal input[name="image"]').addEventListener('change', function(e) {
+            const preview = document.querySelector('#addMaterialModal .image-preview');
+            const img = document.getElementById('imagePreview');
+            const file = e.target.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+
+        // Filter materials
+        function filterMaterials(searchTerm) {
+            const filtered = dealerMaterials.filter(material => 
+                material.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                material.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                material.description.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            displayMaterials(filtered);
+        }
+
+        // Edit material
+        function editMaterial(materialId) {
+            const material = dealerMaterials.find(m => m.id === materialId);
+            if (!material) return;
+
+            document.getElementById('editMaterialId').value = material.id;
+            document.getElementById('editName').value = material.name;
+            document.getElementById('editCategory').value = material.category;
+            document.getElementById('editPrice').value = material.price;
+            document.getElementById('editUnit').value = material.unit;
+            document.getElementById('editDescription').value = material.description;
+            document.getElementById('editInStock').value = material.inStock;
+            document.getElementById('editImagePreview').src = material.image || '/assets/images/placeholder.jpg';
+
+            new bootstrap.Modal(document.getElementById('editMaterialModal')).show();
+        }
+
+        // Update material
+        async function updateMaterial(event) {
+            event.preventDefault();
+            const form = document.getElementById('editMaterialForm');
+            const formData = new FormData(form);
+            const materialId = formData.get('id');
+
+            try {
+                const response = await fetch(`/api/materials/${materialId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to update material');
+                }
+
+                await loadDealerMaterials();
+                bootstrap.Modal.getInstance(document.getElementById('editMaterialModal')).hide();
+                alert('Material updated successfully');
+            } catch (error) {
+                console.error('Error updating material:', error);
+                alert(error.message || 'Failed to update material');
+            }
+        }
+
+        // Filter by stock status
+        function filterByStock(status) {
+            let filtered = dealerMaterials;
+            if (status === 'in') {
+                filtered = dealerMaterials.filter(m => m.inStock);
+            } else if (status === 'out') {
+                filtered = dealerMaterials.filter(m => !m.inStock);
+            }
+            displayMaterials(filtered);
+        }
+
+        // Preview image in edit modal
+        document.querySelector('#editMaterialModal input[name="image"]').addEventListener('change', function(e) {
+            const img = document.getElementById('editImagePreview');
+            const file = e.target.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Add this function after displayMaterials and before or after addMaterial
+        async function deleteMaterial(materialId) {
+            if (!confirm('Are you sure you want to delete this material?')) return;
+            try {
+                const response = await fetch(`/api/materials/${materialId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to delete material');
+                }
+                await loadDealerMaterials();
+                alert('Material deleted successfully');
+            } catch (error) {
+                alert(error.message || 'Failed to delete material');
+            }
+        }
+
+        // Load orders
+        async function loadOrders() {
+            try {
+                const response = await fetch('/api/dealer/orders', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to load orders');
+                }
+
+                const orders = await response.json();
+                displayOrders(orders);
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                alert('Failed to load orders');
+            }
+        }
+
+        // Display orders in the list
+        function displayOrders(orders) {
+            const ordersList = document.getElementById('ordersList');
+            ordersList.innerHTML = '';
+
+            if (!orders || orders.length === 0) {
+                ordersList.innerHTML = '<p class="text-center text-muted">No orders found</p>';
+                return;
+            }
+
+            orders.forEach(order => {
+                const card = document.createElement('div');
+                card.className = 'order-card';
+                card.innerHTML = `
+                    <div class="order-header">
+                        <span class="order-id">Order #${order.id}</span>
+                        <span class="order-status status-${order.status.toLowerCase()}">${order.status}</span>
+                    </div>
+                    <div class="order-details">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Material Details</h5>
+                                <p><strong>Name:</strong> ${order.material?.name || 'N/A'}</p>
+                                <p><strong>Category:</strong> ${order.material?.category || 'N/A'}</p>
+                                <p><strong>Quantity:</strong> ${order.quantity} ${order.material?.unit || 'units'}</p>
+                                <p><strong>Total Price:</strong> ₹${order.totalPrice}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Customer Details</h5>
+                                <p><strong>Name:</strong> ${order.customer?.name || 'N/A'}</p>
+                                <p><strong>Email:</strong> ${order.customer?.email || 'N/A'}</p>
+                                <p><strong>Contact:</strong> ${order.contactNumber}</p>
+                                <p><strong>Delivery Address:</strong> ${order.deliveryAddress}</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <p><strong>Order Date:</strong> ${new Date(order.orderDate).toLocaleString()}</p>
+                            ${order.updatedAt ? `<p><strong>Last Updated:</strong> ${new Date(order.updatedAt).toLocaleString()}</p>` : ''}
+                        </div>
+                    </div>
+                    <div class="order-actions mt-3">
+                        <select class="form-select status-select" onchange="updateOrderStatus('${order.id}', this.value)">
+                            <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                            <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Processing</option>
+                            <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </div>
+                `;
+                ordersList.appendChild(card);
+            });
+        }
+
+        // Update order status
+        async function updateOrderStatus(orderId, status) {
+            try {
+                const response = await fetch(`/api/orders/${orderId}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ status })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update order status');
+                }
+
+                await loadOrders(); // Reload orders after status update
+            } catch (error) {
+                console.error('Error updating order status:', error);
+                alert('Failed to update order status');
+            }
+        }
+
+        // Filter orders by status
+        function filterOrders(status) {
+            const ordersList = document.getElementById('ordersList');
+            const orders = Array.from(ordersList.getElementsByClassName('order-card'));
+
+            orders.forEach(order => {
+                const orderStatus = order.querySelector('.order-status').textContent.toLowerCase();
+                if (status === 'all' || orderStatus === status.toLowerCase()) {
+                    order.style.display = 'block';
+                } else {
+                    order.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html> 

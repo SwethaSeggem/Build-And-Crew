@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1745592217810",
+    "username": "s04",
+    "password": "$2b$10$W151RNSI3NH0Dw6uEmLVDeWi4yegZEuDwwD8HypFwP1HldOApTPSu",
+    "firstName": "s",
+    "lastName": "s",
+    "email": "worker@gmail.com",
+    "phone": "3456783657",
+    "role": "worker",
+    "createdAt": "2025-04-25T14:43:37.810Z",
+    "specialty": "plumber",
+    "experience": "2",
+    "available": false,
+    "updatedAt": "2025-04-28T07:43:51.127Z",
+    "name": "sai",
+    "contact": "9703456788",
+    "location": "Hyderabad",
+    "rate": "250",
+    "skills": [
+      "fittings"
+    ],
+    "description": "better at fittings\n"
+  },
+  {
+    "id": "1746172812042",
+    "username": "lokesh76",
+    "password": "$2b$10$1a3Xu0tnSrHCQt6.HzVIFOltBuimXSIp1Lacpjc/3k4ySwDKCOx5e",
+    "firstName": "Lokesh",
+    "lastName": "B",
+    "email": "lokesh@gmail.com",
+    "phone": "9708678900",
+    "role": "worker",
+    "createdAt": "2025-05-02T08:00:12.042Z",
+    "specialty": "electrician",
+    "experience": "1",
+    "available": true,
+    "visible": true,
+    "name": "Lokesh B",
+    "contact": "9708678900",
+    "location": "Warangal",
+    "rate": "250",
+    "skills": [
+      "Electrical Knowledge",
+      "Troubleshooting"
+    ],
+    "description": "Elecctrical Work",
+    "updatedAt": "2025-05-02T16:26:30.993Z"
+  }
+]

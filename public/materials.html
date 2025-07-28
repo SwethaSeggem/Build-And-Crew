@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materials - Build & Crew</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        .card {
+            transition: transform 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">Build & Crew</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/materials.html">Materials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/workers.html">Workers</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h2>Materials</h2>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="locationSearch" placeholder="Search by location...">
+                    <button class="btn btn-outline-secondary" type="button" onclick="filterByLocation()">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="materialsGrid">
+            <!-- Materials will be loaded here -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let allMaterials = [];
+        let dealers = [];
+
+        // Load dealers data
+        async function loadDealers() {
+            try {
+                const response = await fetch('/api/dealers');
+                if (!response.ok) {
+                    throw new Error('Failed to load dealers');
+                }
+                dealers = await response.json();
+            } catch (error) {
+                console.error('Error loading dealers:', error);
+            }
+        }
+
+        // Load materials data
+        async function loadMaterials() {
+            try {
+                const response = await fetch('/api/materials');
+                if (!response.ok) {
+                    throw new Error('Failed to load materials');
+                }
+                allMaterials = await response.json();
+                displayMaterials(allMaterials);
+            } catch (error) {
+                console.error('Error loading materials:', error);
+                alert('Failed to load materials');
+            }
+        }
+
+        // Display materials
+        function displayMaterials(materials) {
+            const grid = document.getElementById('materialsGrid');
+            grid.innerHTML = '';
+
+            materials.forEach(material => {
+                const card = document.createElement('div');
+                card.className = 'col-md-4 mb-4';
+                card.innerHTML = `
+                    <div class="card h-100">
+                        <img src="${material.image || '/assets/images/placeholder.jpg'}" class="card-img-top" alt="${material.name}">
+                        <div class="card-body">
+                            <h5 class="card-title">${material.name}</h5>
+                            <p class="card-text">
+                                <strong>Category:</strong> ${material.category}<br>
+                                <strong>Price:</strong> $${material.price} / ${material.unit}<br>
+                                <strong>Supplier:</strong> ${material.supplier || 'Not specified'}<br>
+                                <strong>Description:</strong> ${material.description}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge ${material.inStock ? 'bg-success' : 'bg-danger'}">
+                                    ${material.inStock ? 'In Stock' : 'Out of Stock'}
+                                </span>
+                                <button class="btn btn-primary" onclick="contactDealer('${material.id}')">
+                                    Contact Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter by location
+        function filterByLocation() {
+            const locationSearch = document.getElementById('locationSearch').value.toLowerCase();
+            const filteredMaterials = allMaterials.filter(material => {
+                const dealer = dealers.find(d => d.company === material.supplier);
+                return dealer && dealer.address && dealer.address.toLowerCase().includes(locationSearch);
+            });
+            displayMaterials(filteredMaterials);
+        }
+
+        // Contact dealer function
+        function contactDealer(materialId) {
+            const material = allMaterials.find(m => m.id === materialId);
+            if (material) {
+                const dealer = dealers.find(d => d.company === material.supplier);
+                if (dealer) {
+                    alert(`Contact information for ${dealer.company}:\nPhone: ${dealer.phone}\nEmail: ${dealer.email}`);
+                } else {
+                    alert('Dealer information not available');
+                }
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDealers();
+            loadMaterials();
+        });
+    </script>
+</body>
+</html> 

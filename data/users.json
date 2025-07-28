@@ -1,0 +1,188 @@
+[
+  {
+    "id": "1745675646016",
+    "username": "sam05",
+    "password": "$2b$10$N7rmxMuEXXw1oEPaKvFa6egdfYFw7aWsKWoEDl6Un10hBDoCuZbzm",
+    "firstName": "Sam",
+    "lastName": "s",
+    "email": "Sam@gmail.com",
+    "phone": "97017012345",
+    "role": "user",
+    "createdAt": "2025-04-26T13:54:06.016Z",
+    "selectedWorkers": [
+      {
+        "workerId": "1745592217810",
+        "date": "2025-04-27",
+        "projectDetails": "fitting",
+        "address": "warangal",
+        "name": "Sam s",
+        "contact": "Not provided",
+        "status": "pending"
+      },
+      {
+        "workerId": "1745592217810",
+        "date": "2025-04-28",
+        "projectDetails": "Fitting\n",
+        "address": "Warangal",
+        "name": "Sam",
+        "contact": "Not provided",
+        "status": "pending"
+      },
+      {
+        "workerId": "1746172812042",
+        "date": "2025-05-02",
+        "projectDetails": "Electrical Work",
+        "address": "Warangal",
+        "name": "Sam",
+        "contact": "Not provided",
+        "status": "pending"
+      }
+    ]
+  },
+  {
+    "id": "1745684458929",
+    "username": "S06",
+    "password": "$2b$10$goQIypTvEMSrfxBr811mb.KgRfEVEf1Z9IMjZfBR0JsnhASsb1cp6",
+    "firstName": "Ravi",
+    "lastName": "S",
+    "email": "Ravii@gmail.com",
+    "phone": "9078987098",
+    "role": "dealer",
+    "createdAt": "2025-04-26T16:20:58.929Z"
+  },
+  {
+    "id": "1745685021921",
+    "username": "S05",
+    "password": "$2b$10$pHfpZYKyJzZKXXA3SlhPoe0j908dA80CWM9uZVXR20dXRcntMHOmm",
+    "firstName": "Ravi",
+    "lastName": "S",
+    "email": "Ravii@gmail.com",
+    "phone": "9078987098",
+    "role": "dealer",
+    "createdAt": "2025-04-26T16:30:21.921Z"
+  },
+  {
+    "id": "1745730693895",
+    "username": "S09",
+    "password": "$2b$10$KQ4d/9PhhiQL/WK7eICLw.hO4EDXX6/S/shM/SoBSuAIsFL1N468a",
+    "firstName": "Ravi",
+    "lastName": "S",
+    "email": "Ravii@gmail.com",
+    "phone": "9078987098",
+    "role": "dealer",
+    "company": "Build Materials",
+    "address": "456 Builder Road, Hyderabad",
+    "createdAt": "2025-04-27T05:11:33.895Z"
+  },
+  {
+    "id": "1746171256081",
+    "username": "lokesh05",
+    "password": "$2b$10$7Cfm5sNlpi1UmmQVOG9pmeLrY/DgTs9Z9tj9llcYP2S./HLb8yMVq",
+    "firstName": "Lokesh",
+    "lastName": "B",
+    "email": "lokesh@gmail.com",
+    "phone": "9805678990",
+    "role": "user",
+    "company": "",
+    "address": "",
+    "createdAt": "2025-05-02T07:34:16.081Z"
+  },
+  {
+    "id": "1746171304576",
+    "username": "lokesh09",
+    "password": "$2b$10$KvgrR1h20FaHV5ufoDaTAeCP0c0fnyBZDdQkozHdhI5ZOPUmepwy6",
+    "firstName": "Lokesh",
+    "lastName": "B",
+    "email": "lokesh@gmail.com",
+    "phone": "9708678900",
+    "role": "worker",
+    "company": "",
+    "address": "",
+    "createdAt": "2025-05-02T07:35:04.576Z"
+  },
+  {
+    "id": "1746171845286",
+    "username": "lokesh04",
+    "password": "$2b$10$c1mkGGNSJ.qxUI2Unzc6puZDBcOJtA9HmJ139cgA8qm7AjT8t/Cr.",
+    "firstName": "Lokesh",
+    "lastName": "B",
+    "email": "lokesh@gmail.com",
+    "phone": "9708678900",
+    "role": "worker",
+    "company": "",
+    "address": "",
+    "createdAt": "2025-05-02T07:44:05.286Z"
+  },
+  {
+    "id": "1746171978139",
+    "username": "lokesh03",
+    "password": "$2b$10$wTv.aJivW2w9Hd5zZ3VqAe6uisuiL4g2/l9JO7RfoVb.x2Jz6GuL2",
+    "firstName": "Lokesh",
+    "lastName": "B",
+    "email": "lokesh@gmail.com",
+    "phone": "9708678900",
+    "role": "worker",
+    "company": "",
+    "address": "",
+    "createdAt": "2025-05-02T07:46:18.139Z"
+  },
+  {
+    "id": "1746172405178",
+    "username": "lokesh0",
+    "password": "$2b$10$B/CpHazT392DDu3aYyOb8eMmjVt1.19SMGYjPmUHBKxCwb4LaGTZC",
+    "firstName": "Lokesh",
+    "lastName": "B",
+    "email": "lokesh@gmail.com",
+    "phone": "9708678900",
+    "role": "worker",
+    "company": "",
+    "address": "",
+    "createdAt": "2025-05-02T07:53:25.178Z"
+  },
+  {
+    "id": "1746172555493",
+    "username": "lokesh00",
+    "password": "$2b$10$tc/6AaElXtWDVbckYPStI.9XBDIxiHNDAYt.GOBMV9/LWF379btOO",
+    "firstName": "Lokesh",
+    "lastName": "B",
+    "email": "lokesh@gmail.com",
+    "phone": "9708678900",
+    "role": "worker",
+    "company": "",
+    "address": "",
+    "createdAt": "2025-05-02T07:55:55.493Z"
+  },
+  {
+    "id": "1746172812042",
+    "username": "lokesh76",
+    "password": "$2b$10$1a3Xu0tnSrHCQt6.HzVIFOltBuimXSIp1Lacpjc/3k4ySwDKCOx5e",
+    "firstName": "Lokesh",
+    "lastName": "B",
+    "email": "lokesh@gmail.com",
+    "phone": "9708678900",
+    "role": "worker",
+    "createdAt": "2025-05-02T08:00:12.042Z"
+  },
+  {
+    "id": "1746174587729",
+    "username": "akshith09",
+    "password": "$2b$10$oiA24zCH2C33Tj1pI7ztOe6pHVH939iU9I./bk4iqrjMv1URYfMmG",
+    "firstName": "Akshith",
+    "lastName": "K",
+    "email": "akshith@gmail.com",
+    "phone": "8909780990",
+    "role": "dealer",
+    "createdAt": "2025-05-02T08:29:47.729Z"
+  },
+  {
+    "id": "1746175682767",
+    "username": "ramesh09",
+    "password": "$2b$10$GBMYWmHCd8Lvbnqg3qLmjunC6kNoKN2v.dDfAGcwwW/cMvZmn9Y9.",
+    "firstName": "Ramesh",
+    "lastName": "K",
+    "email": "ramesh@gmail.com",
+    "phone": "8909780990",
+    "role": "dealer",
+    "createdAt": "2025-05-02T08:48:02.767Z"
+  }
+]
